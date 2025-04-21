@@ -21,6 +21,7 @@ class ArticleNotFoundError(BusinessException):
     - The article has been deleted
     - The article is not accessible to the current user
     """
+    status_code = status.HTTP_404_NOT_FOUND
     default_detail = 'Article not found'
     default_code = 'article_not_found'
 
