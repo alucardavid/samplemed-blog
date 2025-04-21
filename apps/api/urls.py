@@ -4,9 +4,11 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from apps.api.views.user import UserViewSet
 
 # Create a router for v1 API
 v1_router = DefaultRouter()
+v1_router.register(r'users', UserViewSet, basename='user')
 
 # API v1 URL patterns
 v1_urlpatterns = [

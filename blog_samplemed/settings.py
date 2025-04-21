@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'apps.api.middleware.JSONMiddleware',
 ]
 
 ROOT_URLCONF = 'blog_samplemed.urls'
@@ -170,3 +171,5 @@ REDOC_SETTINGS = {
     'HIDE_HOSTNAME': False,
     'EXPAND_RESPONSES': 'all',
 }
+
+APPEND_SLASH = False
