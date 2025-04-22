@@ -7,7 +7,7 @@ from apps.core.exceptions.business_exceptions import BusinessException
 from django_filters.rest_framework import DjangoFilterBackend
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-
+from django.core.cache import cache
 @method_decorator(cache_page(60 * 5), name='list')
 class KeywordViewSet(viewsets.ModelViewSet):
     """
@@ -47,6 +47,7 @@ class KeywordViewSet(viewsets.ModelViewSet):
         
         try:
             keyword = KeywordService.create_keyword(serializer.validated_data['name'])
+            cache.clear()
             response_serializer = KeywordSerializer(keyword)
             return Response(response_serializer.data, status=status.HTTP_201_CREATED)
         except BusinessException as e:

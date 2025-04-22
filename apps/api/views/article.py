@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django_filters.rest_framework import DjangoFilterBackend
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 @method_decorator(cache_page(60 * 5), name='list')
 class ArticleViewSet(viewsets.ModelViewSet):
@@ -55,6 +56,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
         try:
             article = ArticleService.create_article(serializer.validated_data, user)
+            cache.clear()
             return Response(ArticleSerializer(article).data, status=status.HTTP_201_CREATED)
         except BusinessException as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
