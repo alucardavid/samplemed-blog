@@ -2,7 +2,10 @@ from rest_framework import viewsets, permissions, pagination
 from apps.api.models.comment import Comment
 from apps.api.serializers.comment import CommentSerializer
 from django_filters.rest_framework import DjangoFilterBackend
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
+@method_decorator(cache_page(60 * 5), name='list')
 class CommentViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing comment operations.

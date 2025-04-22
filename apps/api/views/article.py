@@ -8,7 +8,10 @@ from apps.core.exceptions.business_exceptions import BusinessException
 from apps.api.serializers.article import ArticleSerializer, ArticleCreateSerializer
 from django.contrib.auth.models import User
 from django_filters.rest_framework import DjangoFilterBackend
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
+@method_decorator(cache_page(60 * 5), name='list')
 class ArticleViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing article operations.

@@ -138,6 +138,13 @@ REST_FRAMEWORK = {
     'MAX_PAGE_SIZE': 100,
 }
 
+# Caching settings
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',  # In-memory cache for development
+    }
+}
+
 # JWT settings
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=config('JWT_ACCESS_TOKEN_LIFETIME_MINUTES', default=60, cast=int)),

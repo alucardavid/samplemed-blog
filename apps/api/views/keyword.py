@@ -5,7 +5,10 @@ from apps.api.serializers.keyword import KeywordCreateSerializer, KeywordSeriali
 from apps.core.services.keyword_service import KeywordService
 from apps.core.exceptions.business_exceptions import BusinessException
 from django_filters.rest_framework import DjangoFilterBackend
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
+@method_decorator(cache_page(60 * 5), name='list')
 class KeywordViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing keyword operations.
