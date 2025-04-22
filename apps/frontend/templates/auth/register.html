@@ -1,0 +1,30 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+{% block title %}Cadastro{% endblock %}
+
+{% block content %}
+<style>
+    .errorlist{
+        color: red;
+        font-size: 0.875em;
+    }
+</style>
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h2>Cadastro</h2>
+        <form id="register-form" method="post" class="mt-4">
+            {% csrf_token %}
+            {% if field.errors %}
+                <div class="text-danger small">{{ field.errors|striptags }}</div>
+            {% endif %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- <script src="{% static 'frontend/js/register.js' %}"></script> -->
+{% endblock %} 
