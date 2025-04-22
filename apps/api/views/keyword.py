@@ -4,37 +4,29 @@ from apps.api.models.keyword import Keyword
 from apps.api.serializers.keyword import KeywordCreateSerializer, KeywordSerializer
 from apps.core.services.keyword_service import KeywordService
 from apps.core.exceptions.business_exceptions import BusinessException
+from django_filters.rest_framework import DjangoFilterBackend
 
-class ArticlePagination(pagination.PageNumberPagination):
-    page_size = 10
-    page_size_query_param = 'page_size'
-    max_page_size = 100
 class KeywordViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing keyword operations.
     
     This viewset provides the following actions:
-    - List keywords (GET /keywords/)
     - Create keyword (POST /keywords/)
-    - Retrieve keyword (GET /keywords/{id}/)
-    - Update keyword (PUT/PATCH /keywords/{id}/)
-    - Delete keyword (DELETE /keywords/{id}/)
     
     Authentication:
-    - Reading keywords is allowed for all users
-    - Creating/updating/deleting requires authentication
+    - Reading/creating/updating/deleting requires authentication
     """
     
     queryset = Keyword.objects.all()
     serializer_class = KeywordSerializer
     permission_classes = [permissions.IsAuthenticated]
-    pagination_class = ArticlePagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['name']
 
     def get_serializer_class(self):
         if self.action == 'create':
             return KeywordCreateSerializer
         return KeywordSerializer
-
 
     def create(self, request):
         """

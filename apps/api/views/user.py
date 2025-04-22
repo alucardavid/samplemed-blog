@@ -7,12 +7,6 @@ from apps.core.exceptions.business_exceptions import BusinessException
 from apps.api.serializers.user import UserSerializer, UserRegistrationSerializer
 
 User = get_user_model()
-
-
-class ArticlePagination(pagination.PageNumberPagination):
-    page_size = 10
-    page_size_query_param = 'page_size'
-    max_page_size = 100
 class UserViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing user operations.
@@ -32,7 +26,6 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    pagination_class = ArticlePagination
 
     def get_permissions(self):
         """

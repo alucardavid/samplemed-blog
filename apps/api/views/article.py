@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, status, pagination
+from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
@@ -7,38 +7,31 @@ from apps.core.services.article_service import ArticleService
 from apps.core.exceptions.business_exceptions import BusinessException
 from apps.api.serializers.article import ArticleSerializer, ArticleCreateSerializer
 from django.contrib.auth.models import User
-
-class ArticlePagination(pagination.PageNumberPagination):
-    page_size = 10
-    page_size_query_param = 'page_size'
-    max_page_size = 100
+from django_filters.rest_framework import DjangoFilterBackend
 
 class ArticleViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing article operations.
     
     This viewset provides the following actions:
-    - List articles (GET /articles/)
     - Create article (POST /articles/)
-    - Retrieve article (GET /articles/{id}/)
-    - Update article (PUT/PATCH /articles/{id}/)
-    - Delete article (DELETE /articles/{id}/)
     - Get articles by author (GET /articles/author/{author_id}/)
     
     Authentication:
     - Reading/creating/updating/deleting requires authentication
     """
     
-    queryset = Article.objects.all()
+    queryset = Article.objects.all().select_related('author').prefetch_related('keywords', 'comments')
     serializer_class = ArticleSerializer
     permission_classes = [permissions.IsAuthenticated]
-    pagination_class = ArticlePagination
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['title', 'subtitle', 'status', 'type', 'author', 'keywords']
 
     def get_serializer_class(self):
         if self.action == 'create':
             return ArticleCreateSerializer
         return ArticleSerializer
-    
+
     def create(self, request):
         """
         Create a new article.
