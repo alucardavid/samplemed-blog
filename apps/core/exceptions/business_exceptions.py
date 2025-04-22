@@ -59,6 +59,7 @@ class CommentNotFoundError(BusinessException):
     - The comment has been deleted
     - The comment is not accessible to the current user
     """
+    status_code = status.HTTP_404_NOT_FOUND
     default_detail = 'Comment not found'
     default_code = 'comment_not_found'
 
@@ -70,6 +71,7 @@ class KeywordNotFoundError(BusinessException):
     - A keyword with the specified ID doesn't exist
     - The keyword has been deleted
     """
+    status_code = status.HTTP_404_NOT_FOUND
     default_detail = 'Keyword not found'
     default_code = 'keyword_not_found'
 
@@ -81,6 +83,7 @@ class UserNotFoundError(BusinessException):
     - A user with the specified ID doesn't exist
     - The user has been deleted
     """
+    status_code = status.HTTP_404_NOT_FOUND
     default_detail = 'User not found'
     default_code = 'user_not_found'
 
