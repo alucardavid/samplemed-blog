@@ -10,5 +10,9 @@ class Keyword(models.Model):
     
     class Meta:
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['name']),
+            models.Index(fields=['created_at']),
+        ]
         verbose_name = 'Keyword'
         verbose_name_plural = 'Keywords'

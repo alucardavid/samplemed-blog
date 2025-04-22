@@ -27,5 +27,11 @@ class Article(models.Model):
     
     class Meta:
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['author']),
+            models.Index(fields=['status']),
+            models.Index(fields=['type']),
+            models.Index(fields=['created_at']),
+        ]
         verbose_name = 'Article'
         verbose_name_plural = 'Articles'

@@ -14,5 +14,10 @@ class Comment(models.Model):
     
     class Meta:
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['article']),
+            models.Index(fields=['author']),
+            models.Index(fields=['created_at']),
+        ]
         verbose_name = 'Comment'
         verbose_name_plural = 'Comments'
