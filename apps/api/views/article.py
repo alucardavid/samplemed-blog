@@ -31,6 +31,11 @@ class ArticleViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['title', 'subtitle', 'status', 'type', 'author', 'keywords']
 
+    def get_permissions(self):
+        if self.action == 'list':
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
     def get_serializer_class(self):
         if self.action == 'create':
             return ArticleCreateSerializer
