@@ -5,6 +5,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from apps.api.views.article import ArticleViewSet
+from apps.api.views.comment import CommentViewSet
 from apps.api.views.keyword import KeywordViewSet
 from apps.api.views.user import UserViewSet
 
@@ -13,6 +14,7 @@ v1_router = DefaultRouter()
 v1_router.register(r'users', UserViewSet, basename='user')
 v1_router.register(r'articles', ArticleViewSet, basename='article')
 v1_router.register(r'keywords', KeywordViewSet, basename='keyword')
+v1_router.register(r'comments', CommentViewSet, basename='comment')
 
 # API v1 URL patterns
 v1_urlpatterns = [
