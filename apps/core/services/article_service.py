@@ -1,45 +1,13 @@
-from datetime import datetime, timezone
-from django.db.models import Q
 from apps.api.models.article import Article
-from typing import Dict, List, Optional
+from typing import Dict, List
 from django.contrib.auth.models import User
-from apps.core.exceptions.business_exceptions import ArticleNotFoundError, UnauthorizedError
-from apps.api.serializers.article import ArticleCreateSerializer
+from apps.api.serializers.keyword import KeywordCreateSerializer
+from apps.core.services.keyword_service import KeywordService
 
 class ArticleService:
     """
     Service class for managing articles.
     """
-
-    @staticmethod
-    def get_all_articles() -> List[Article]:
-        """
-        Retrieves all articles from the database.
-        
-        Returns:
-            List[Article]: A list of all articles.
-        """
-        return Article.objects.select_related('author').all()
-    
-    @staticmethod
-    def get_article_by_id(article_id: int) -> Optional[Article]:
-        """
-        Retrieves an article by its ID.
-        
-        Args:
-            article_id (int): The ID of the article to retrieve.
-        
-        Returns:
-            Optional[Article]: The article if found, otherwise None.
-        
-        Raises:
-            ArticleNotFoundError: If the article with the given ID does not exist.
-        """
-        try:
-            return Article.objects.select_related('author').get(id=article_id)
-        except Article.DoesNotExist:
-            raise ArticleNotFoundError(f"Article with id {article_id} not found.")
-    
     @staticmethod
     def get_articles_by_author(author: User) -> List[Article]:
         """
@@ -66,66 +34,27 @@ class ArticleService:
             article_db (Article): The created article instance.
         
         """
+        # Extract keywords from article data
+        keywords = article_data.pop('keywords', [])
+
         # Add author to article data
         article_data['author'] = author
 
         # Create article
-        article_db = Article.objects.create(**article_data)
-        article_db.save()
-        article_db.refresh_from_db()
+        article = Article.objects.create(**article_data)
 
-        return article_db
-    
-    @staticmethod
-    def update_article(article: Article, article_data: Dict, author: User) -> Article:
-        """
-        Updates an existing article.
-        
-        Args:
-            article_id (int): The ID of the article to update.
-            article_data (Dict): The data for the article to be updated.
-            author (User): The author of the article.
-        
-        Returns:
-            Article: The updated article instance.
-        
-        Raises:
-            ArticleNotFoundError: If the article with the given ID does not exist.
-        """
-        # Check if the author is the same as the one who created the article
-        if article.author != author:
-            raise UnauthorizedError("You are not authorized to update this article.")
-
-        # Update the article
-        for key, value in article_data.items():
-            setattr(article, key, value)
-
-        article.updated_at = datetime.now(timezone.utc)
-
-        # Save and refresh the article
-        article.save()
-        article.refresh_from_db()
-
+        # Set keywords for the article
+        keywords_objs = []
+        if keywords:
+            for name in keywords:
+                serializer = KeywordCreateSerializer(data={'name': name})
+                serializer.is_valid(raise_exception=True)
+                keyword = serializer.save()
+                keywords_objs.append(keyword)
+        article.keywords.set(keywords_objs)
         return article
     
-    @staticmethod
-    def delete_article(article: Article, author: User) -> None:
-        """
-        Deletes an article.
-        
-        Args:
-            article (Article): The article to delete.
-            author (User): The author of the article.
-        
-        Raises:
-            UnauthorizedError: If the author is not authorized to delete the article.
-        """
-        # Check if the author is the same as the one who created the article
-        if article.author != author:
-            raise UnauthorizedError("You are not authorized to delete this article.")
-
-        # Delete the article
-        article.delete()
+    
         
 
     
