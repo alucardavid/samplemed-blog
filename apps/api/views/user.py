@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, status
+from rest_framework import viewsets, permissions, status, pagination
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework.exceptions import ValidationError, NotFound, PermissionDenied
@@ -8,6 +8,11 @@ from apps.api.serializers.user import UserSerializer, UserRegistrationSerializer
 
 User = get_user_model()
 
+
+class ArticlePagination(pagination.PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 class UserViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing user operations.
@@ -27,6 +32,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    pagination_class = ArticlePagination
 
     def get_permissions(self):
         """
@@ -35,25 +41,6 @@ class UserViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return [permissions.AllowAny()]
         return super().get_permissions()
-
-    def list(self, request):
-        """
-        Returns a filtered queryset of users based on user permissions.
-        
-        Returns:
-            request: Request object containing the query parameters
-            
-        Raises:
-            BusinessException: If there's an error in the query parameters
-            ValidationError: If there's an error in the query parameters
-        """
-        try:
-            users = UserService.get_all_users(self)
-            return Response(users)
-        except BusinessException as e:
-            raise ValidationError({'error': str(e)})
-        except Exception as e:
-            raise ValidationError({'error': e})
 
     def create(self, request):
         """

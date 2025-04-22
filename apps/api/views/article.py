@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, status
+from rest_framework import viewsets, permissions, status, pagination
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
@@ -7,6 +7,11 @@ from apps.core.services.article_service import ArticleService
 from apps.core.exceptions.business_exceptions import BusinessException
 from apps.api.serializers.article import ArticleSerializer, ArticleCreateSerializer
 from django.contrib.auth.models import User
+
+class ArticlePagination(pagination.PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 class ArticleViewSet(viewsets.ModelViewSet):
     """
@@ -27,6 +32,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
     permission_classes = [permissions.IsAuthenticated]
+    pagination_class = ArticlePagination
 
     def get_serializer_class(self):
         if self.action == 'create':

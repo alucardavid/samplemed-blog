@@ -1,10 +1,14 @@
-from rest_framework import viewsets, permissions, status
+from rest_framework import viewsets, permissions, status, pagination
 from rest_framework.response import Response
 from apps.api.models.keyword import Keyword
 from apps.api.serializers.keyword import KeywordCreateSerializer, KeywordSerializer
 from apps.core.services.keyword_service import KeywordService
 from apps.core.exceptions.business_exceptions import BusinessException
 
+class ArticlePagination(pagination.PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 class KeywordViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing keyword operations.
@@ -24,6 +28,7 @@ class KeywordViewSet(viewsets.ModelViewSet):
     queryset = Keyword.objects.all()
     serializer_class = KeywordSerializer
     permission_classes = [permissions.IsAuthenticated]
+    pagination_class = ArticlePagination
 
     def get_serializer_class(self):
         if self.action == 'create':
