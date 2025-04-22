@@ -3,7 +3,7 @@ from django.conf import settings
 from django.shortcuts import redirect, render
 from apps.frontend.forms import RegisterForm
 from apps.frontend.services.api_auth import register_user
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout as auth_logout
 
 def register(request):
     """
@@ -42,3 +42,14 @@ def register(request):
         form = RegisterForm()
 
     return render(request, 'auth/register.html', {'form': form})
+
+def logout(request):
+    """
+        View to handle user logout.
+        It clears the session and redirects to the login page.
+    """
+    # Clear the session
+    auth_logout(request)    
+    
+    # Redirect to the login page or any other page
+    return redirect('frontend:index')
