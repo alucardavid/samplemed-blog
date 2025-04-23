@@ -32,7 +32,7 @@ class ArticleViewSet(viewsets.ModelViewSet):
     filterset_fields = ['title', 'subtitle', 'status', 'type', 'author', 'keywords']
 
     def get_permissions(self):
-        if self.action == 'list':
+        if self.action in ['list', 'retrieve']:
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
 

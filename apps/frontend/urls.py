@@ -10,5 +10,6 @@ urlpatterns = [
     path('logout/', auth.logout, name='logout'),
     path('login/', auth.login, name='login'),
     path('article/', article.article_list, name='article_list'),
+    path('article/<int:pk>/', article.article_detail, name='article_detail'),
 ]
     

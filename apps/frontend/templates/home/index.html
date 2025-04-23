@@ -38,7 +38,7 @@
                                     <span class="badge bg-secondary me-1">{{ keyword.name }}</span>
                                 {% endfor %}
                             </div>
-                            <a href="#" class="btn btn-primary mt-3">Ler Mais</a>
+                            <a href="{% url 'frontend:article_detail' pk=article.id %}" class="btn btn-primary mt-3">Ler Mais</a>
                         </div>
                     </div>
                 </div>
