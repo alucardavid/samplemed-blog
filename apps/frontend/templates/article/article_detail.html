@@ -34,14 +34,15 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">Comments</h3>
+                    <h3 class="card-title">Comentários</h3>
                     {% if user.is_authenticated %}
-                    <form id="comment-form" class="mb-4">
+                    <form action="{% url 'frontend:comment_create' pk=article.id %}" method="post" class="mb-4">
+                        {% csrf_token %}
                         <div class="mb-3">
-                            <label for="comment-content" class="form-label">Your Comment</label>
-                            <textarea class="form-control" id="comment-content" rows="3" required></textarea>
+                            <label for="comment-content" class="form-label">Seu comentario</label>
+                            <textarea class="form-control" id="comment-content" name="comment-content" rows="3" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Send Comment</button>
+                        <button type="submit" class="btn btn-primary">Comentar</button>
                     </form>
                     {% else %}
                     <div class="alert alert-info">
@@ -69,27 +70,7 @@
             </div>
         </div>
     </div>
-
-    {% if user.is_authenticated and user.id == article.author.id %}
-    <!-- Modal de Confirmação de Exclusão -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete this article? This action cannot be undone.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="confirm-delete">Excluir</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
+   
 </div>
 {% endblock %}
 

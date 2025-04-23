@@ -29,3 +29,23 @@ def get_article_by_id(request, article_id):
     if response.status_code == 200:
         article = response.json()
         return article
+    
+def create_comment(request, article_id, comment):
+    # Url apis to fetch articles
+    api_url = f'{settings.API_URL}/api/v1/comments/'
+    headers = {
+        'Content-Type': 'application/json', 
+        'Authorization': f'Bearer {request.session.get('jwt_token')}'
+    }
+
+    payload = {
+        'content': comment,
+        'article': article_id	
+    }
+
+    # Fetch articles from the API
+    response = requests.post(api_url, headers=headers, json=payload)
+
+    if response.status_code == 201:
+        comment = response.json()
+        return comment

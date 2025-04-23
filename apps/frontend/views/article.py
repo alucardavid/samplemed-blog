@@ -1,5 +1,5 @@
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.conf import settings
 from apps.frontend.services import api_articles
 from django.contrib import messages
@@ -38,3 +38,21 @@ def article_detail(request, pk):
     return render(request, 'article/article_detail.html', {
         'article': article
     })
+
+def comment_create(request, pk):
+    """
+    View to handle the creation of a comment on an article.
+    """
+    if request.method == 'POST':
+        comment = request.POST.get('comment-content')
+        if not comment:
+            messages.error(request, 'Comment cannot be empty.')
+            return redirect('article_detail', pk=pk)
+        
+        try:
+            api_articles.create_comment(request, pk, comment)
+            messages.success(request, 'Comment added successfully.')
+        except requests.RequestException as e:
+            messages.error(request, 'Failed to add comment. Please try again later.')
+    
+    return redirect('frontend:article_detail', pk=pk)
