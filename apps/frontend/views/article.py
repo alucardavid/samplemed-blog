@@ -1,13 +1,14 @@
+
 from django.shortcuts import render
-from django.contrib import messages
 from django.conf import settings
+from apps.frontend.services import api_articles
+from django.contrib import messages
 import requests
 
-from apps.frontend.services import api_articles
-
-
-def index(request):
-    """Render the home page with articles."""
+def article_list(request):
+    """
+    View to fetch and display a list of articles from the API.
+    """
     try:
         articles = api_articles.get_articles()
         if not articles:
@@ -16,7 +17,7 @@ def index(request):
     except requests.RequestException as e:
         messages.error(request, 'Failed to fetch articles. Please try again later.')
         articles = {'results': []} 
-
-    return render(request, 'home/index.html', {
-        'articles': articles.get('results', [])
+    
+    return render(request, 'articles/articles_list.html', {
+        'articles': articles['results']
     })

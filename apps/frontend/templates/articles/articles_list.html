@@ -1,23 +1,20 @@
 {% extends 'shared/base.html' %}
 {% load static %}
 {% load custom_filters %}
-{% block title %}Blog Samplemed{% endblock %}
+
+{% block title %}Artigos{% endblock %}
 
 {% block content %}
-<div class="jumbotron mb-4">
-    <h1 class="display-4">Bem-vindo ao nosso blog</h1>
-    <p class="lead">Esse é um blog de exemplo para o projeto Samplemed</p>
-    <hr class="my-4">
-    <p>Veja nossos artigos ou crie o seu.</p>
-    <a class="btn btn-primary btn-lg" href="{% url 'frontend:article_list' %}" role="button">Ver Todos os Artigos</a>
-    {% if user.is_authenticated %}
-    <a class="btn btn-success btn-lg" href="#" role="button">Criar Novo Artigo</a>
-    {% endif %}
-</div>
-
 <div class="row">
+    <div class="col-12 d-flex justify-content-between align-items-center mb-4">
+        <h2>Artigos</h2>
+        {% if user.is_authenticated %}
+        <a href="#" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Novo Artigo
+        </a>
+        {% endif %}
+    </div>
     <div class="col-12">
-        <h2 class="mb-4">Últimos Artigos</h2>
         <div class="row">
             {% if articles %}
                 {% for article in articles %}
@@ -29,7 +26,9 @@
                             <div class="mb-2">
                                 <small class="text-muted">
                                     Por {{ article.author.first_name }} {{ article.author.last_name }} ({{ article.author.username }})
-                                    em {{ article.created_at|format_datetime:"date" }}
+                                    {% if article.created_at %}
+                                        em {{ article.created_at|format_datetime:"date" }}
+                                    {% endif %}
                                 </small>
                             </div>
                             <p class="card-text">{{ article.content|truncatechars:150 }}</p>
@@ -38,20 +37,17 @@
                                     <span class="badge bg-secondary me-1">{{ keyword.name }}</span>
                                 {% endfor %}
                             </div>
-                            <a href="#" class="btn btn-primary mt-3">Ler Mais</a>
+                            <a href="#" class="btn btn-primary">Ler Mais</a>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             {% else %}
                 <div class="col-12">
-                    <p>Nenhum artigo encontrado.</p>
+                    <p>No articles found.</p>
                 </div>
             {% endif %}
         </div>
     </div>
 </div>
-
 {% endblock %}
-
-
