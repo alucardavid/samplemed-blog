@@ -1,0 +1,20 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+{% block title %}Criar Novo Artigo{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2>Criar Novo Artigo</h2>
+        <form method="POST" class="mt-4">
+            {% csrf_token %}
+            {% if field.errors %}
+                <div class="text-danger small">{{ field.errors|striptags }}</div>
+            {% endif %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Criar Artigo</button>
+        </form>
+    </div>
+</div>
+{% endblock %} 

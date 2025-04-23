@@ -1,0 +1,18 @@
+{% extends 'shared/base.html' %}
+
+{% block content %}
+<div class="text-center">
+    <h3>Login realizado com sucesso!</h3>
+    <p>Redirecionando...</p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Armazena o token no localStorage
+    localStorage.setItem('jwt_token', '{{ token }}');
+    
+    // Redireciona para a página inicial
+    window.location.href = '{% url "frontend:index" %}';
+</script>
+{% endblock %}
