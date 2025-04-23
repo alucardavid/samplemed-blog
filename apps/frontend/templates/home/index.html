@@ -11,7 +11,7 @@
     <p>Veja nossos artigos ou crie o seu.</p>
     <a class="btn btn-primary btn-lg" href="{% url 'frontend:article_list' %}" role="button">Ver Todos os Artigos</a>
     {% if user.is_authenticated %}
-    <a class="btn btn-success btn-lg" href="#" role="button">Criar Novo Artigo</a>
+    <a class="btn btn-success btn-lg" href="{% url 'frontend:article_create' %}" role="button">Criar Novo Artigo</a>
     {% endif %}
 </div>
 

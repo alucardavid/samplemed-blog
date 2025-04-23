@@ -49,3 +49,27 @@ def create_comment(request, article_id, comment):
     if response.status_code == 201:
         comment = response.json()
         return comment
+    
+def create_article(request, article):
+    # Url apis to fetch articles
+    api_url = f'{settings.API_URL}/api/v1/articles/'
+    headers = {
+        'Content-Type': 'application/json', 
+        'Authorization': f'Bearer {request.session.get('jwt_token')}'
+    }
+
+    payload = {
+        'title': article['title'],
+        'subtitle': article['subtitle'],
+        'content': article['content'],
+        'type': article['type'],
+        'status': article['status'],
+        'keywords': article['keywords'],
+    }
+
+    # Fetch articles from the API
+    response = requests.post(api_url, headers=headers, json=payload)
+
+    if response.status_code == 201:
+        article = response.json()
+        return article
