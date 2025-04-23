@@ -1,0 +1,32 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Login</h3>
+                </div>
+                <div class="card-body">
+                    <form id="register-form" method="post" class="mt-4">
+                        {% csrf_token %}
+                        {% if field.errors %}
+                            <div class="text-danger small">{{ field.errors|striptags }}</div>
+                        {% endif %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Entrar</button>
+                    </form>
+                    
+                    <div class="text-center mt-6">
+                        <p>Don't have an account? <a href="{% url 'frontend:register' %}">Register</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

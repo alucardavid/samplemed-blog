@@ -25,3 +25,12 @@ class RegisterForm(forms.ModelForm):
         if cleaned_data.get('password') != cleaned_data.get('password_confirm'):
             self.add_error('password_confirm', 'As senhas não coincidem.')
         return cleaned_data
+    
+
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'Nome de usuário', 'class': 'form-control'})
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'Senha', 'class': 'form-control'})
+    )

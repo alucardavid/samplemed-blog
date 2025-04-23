@@ -32,3 +32,32 @@ def register_user(user: User) -> dict:
         return response.json()
     else:
         return {'error': response.json()}
+    
+
+def login_user(username: str, password: str) -> dict:
+    """
+    Log in a user with the given username and password.
+
+    Parameters:
+        - username (str): The username of the user.
+        - password (str): The password of the user.
+        
+    """
+    
+    # Url apis to fetch articles
+    api_url = f'{settings.API_URL}/api/v1/token/'
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    payload = {
+        'username': username,
+        'password': password,
+    }
+
+    response = requests.post(api_url, headers=headers, json=payload)
+    
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return {'error': response.json()}
