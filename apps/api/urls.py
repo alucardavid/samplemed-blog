@@ -9,6 +9,9 @@ from apps.api.views.comment import CommentViewSet
 from apps.api.views.keyword import KeywordViewSet
 from apps.api.views.user import UserViewSet
 
+
+app_name = 'api'
+
 # Create a router for v1 API
 v1_router = DefaultRouter()
 v1_router.register(r'users', UserViewSet, basename='user')
