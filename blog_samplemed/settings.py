@@ -137,7 +137,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'MAX_PAGE_SIZE': 100,
     'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.AnonRateThrottle',
         'rest_framework.throttling.UserRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
